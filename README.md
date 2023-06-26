@@ -3,6 +3,7 @@
 ## TECNOLOGIAS UTILIZADAS
 
 API: PHP + MicroFramewok SLIM V4, POSTMAN (envio de HTTP) y phpMyAdmin como administrador de MySQL.
+
 Temas PHP/SLIM: Middleware, MVC, PDO, JWT y enrutamiento.
 
 ## Requerimientos:
