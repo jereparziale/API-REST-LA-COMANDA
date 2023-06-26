@@ -3,7 +3,8 @@
 class Mesa{
 
     public $id_mesa;
-    public $id_mozo;
+    public $numeroMesa;
+    public $usuario_mozo;
     public $nombreCliente;
     public $estado;
     public $cantidadComensales;
@@ -20,9 +21,10 @@ class Mesa{
     public function crearMesa()
     {
         $objAccesoDatos = AccesoDatos::obtenerInstancia();
-        $consulta = $objAccesoDatos->prepararConsulta("INSERT INTO mesas (id_mesa,id_mozo, nombreCliente, estado,cantidadComensales,importeTotal,fechaApertura,fechaCierre) VALUES (:id_mesa,:id_mozo, :nombreCliente, :estado,:cantidadComensales,:importeTotal,:fechaApertura,:fechaCierre)");
+        $consulta = $objAccesoDatos->prepararConsulta("INSERT INTO mesas (id_mesa,numeroMesa,usuario_mozo, nombreCliente, estado,cantidadComensales,importeTotal,fechaApertura,fechaCierre) VALUES (:id_mesa,:numeroMesa,:usuario_mozo, :nombreCliente, :estado,:cantidadComensales,:importeTotal,:fechaApertura,:fechaCierre)");
         $consulta->bindValue(':id_mesa', $this->id_mesa, PDO::PARAM_STR);
-        $consulta->bindValue(':id_mozo', $this->id_mozo, PDO::PARAM_STR);
+        $consulta->bindValue(':numeroMesa', $this->numeroMesa, PDO::PARAM_INT);
+        $consulta->bindValue(':usuario_mozo', $this->usuario_mozo, PDO::PARAM_STR);
         $consulta->bindValue(':nombreCliente', $this->nombreCliente, PDO::PARAM_STR);
         $consulta->bindValue(':estado', $this->estado, PDO::PARAM_STR);
         $consulta->bindValue(':cantidadComensales', $this->cantidadComensales, PDO::PARAM_INT);
@@ -37,7 +39,7 @@ class Mesa{
     public static function obtenerTodos()
     {
         $objAccesoDatos = AccesoDatos::obtenerInstancia();
-        $consulta = $objAccesoDatos->prepararConsulta("SELECT id_mesa,id_mozo, nombreCliente, estado,cantidadComensales,importeTotal,fechaApertura,fechaCierre FROM mesas");
+        $consulta = $objAccesoDatos->prepararConsulta("SELECT id_mesa,numeroMesa,usuario_mozo, nombreCliente, estado,cantidadComensales,ruta_foto,importeTotal,fechaApertura,fechaCierre FROM mesas");
         $consulta->execute();
     
         return $consulta->fetchAll(PDO::FETCH_CLASS, 'Mesa');
@@ -46,7 +48,7 @@ class Mesa{
     public static function obtenerMesa($id_mesa)
     {
         $objAccesoDatos = AccesoDatos::obtenerInstancia();
-        $consulta = $objAccesoDatos->prepararConsulta("SELECT id_mesa,id_mozo,nombreCliente, estado,cantidadComensales,importeTotal,fechaApertura,fechaCierre  FROM mesas WHERE id_mesa = :id_mesa");
+        $consulta = $objAccesoDatos->prepararConsulta("SELECT id_mesa,numeroMesa,usuario_mozo,nombreCliente, estado,cantidadComensales,ruta_foto,importeTotal,fechaApertura,fechaCierre  FROM mesas WHERE id_mesa = :id_mesa");
         $consulta->bindValue(':id_mesa', $id_mesa, PDO::PARAM_STR);
         $consulta->execute();
         return $consulta->fetchObject('Mesa');
@@ -76,7 +78,7 @@ class Mesa{
     public static function obtenerMesaSegunEstado($id_mesa,$estado)
     {
         $objAccesoDatos = AccesoDatos::obtenerInstancia();
-        $consulta = $objAccesoDatos->prepararConsulta("SELECT id_mesa,id_mozo,nombreCliente, estado,cantidadComensales,importeTotal,fechaApertura,fechaCierre  FROM mesas WHERE id_mesa = :id_mesa AND estado = :estado");
+        $consulta = $objAccesoDatos->prepararConsulta("SELECT id_mesa,numeroMesa,usuario_mozo,nombreCliente, estado,cantidadComensales,ruta_foto,importeTotal,fechaApertura,fechaCierre  FROM mesas WHERE id_mesa = :id_mesa AND estado = :estado");
         $consulta->bindValue(':id_mesa', $id_mesa, PDO::PARAM_STR);
         $consulta->bindValue(':estado', $estado, PDO::PARAM_STR);
         $consulta->execute();
@@ -122,6 +124,7 @@ class Mesa{
                 $mesaSeleccionada->estado = Mesa::ESTADO_PAGANDO;
                 $mesaSeleccionada->importeTotal = Mesa::CalcularImporteTotal($id_mesa);
                 $mesaSeleccionada->modificarMesa();
+                return $mesaSeleccionada;
         }
     }
 

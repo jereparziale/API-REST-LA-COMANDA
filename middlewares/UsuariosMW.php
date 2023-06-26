@@ -45,7 +45,7 @@ class UsuariosMW
                 throw new Exception("Usuario no autorizado");
             }
             else
-            {                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                
+            {  
                 throw new Exception("Token vacío");
             }
         } 
@@ -57,7 +57,65 @@ class UsuariosMW
             return $response->withHeader('Content-Type', 'application/json');;
         }
     }
-
+    public function ValidarMozo($request, $handler)
+    {
+        try 
+        {
+            $header = $request->getHeaderLine('Authorization');
+            if(!empty($header))
+            {
+                $token = trim(explode("Bearer", $header)[1]);
+                $data = AutentificadorJWT::VerificarToken($token);
+                if($data->data->puesto == Puesto::PUESTO_MOZO || $data->data->puesto == Puesto::PUESTO_SOCIO)
+                {
+                    $request = $request->withAttribute('usuario', $data->data);
+                    return $handler->handle($request);
+                }
+                throw new Exception("Usuario no autorizado");
+            }
+            else
+            {                                                                                              
+                throw new Exception("Token vacío");
+            }
+        } 
+        catch (Exception $e) 
+        {
+            $response = new Response();
+            $payload = json_encode(array("mensaje" => "ERROR, ".$e->getMessage()));
+            $response->getBody()->write($payload);
+            return $response->withHeader('Content-Type', 'application/json');;
+        }
+    }
+    public function ValidarEmpleadoDePreparacion($request, $handler)
+    {
+        try 
+        {
+            $header = $request->getHeaderLine('Authorization');
+            if(!empty($header))
+            {
+                $token = trim(explode("Bearer", $header)[1]);
+                $data = AutentificadorJWT::VerificarToken($token);
+                if($data->data->puesto == Puesto::PUESTO_BARTENDER || $data->data->puesto == Puesto::PUESTO_CERVECERO || $data->data->puesto == Puesto::PUESTO_COCINERO || $data->data->puesto == Puesto::PUESTO_PASTELERO || $data->data->puesto == Puesto::PUESTO_SOCIO)
+                {
+                    $request = $request->withAttribute('usuario', $data->data);
+                    return $handler->handle($request);
+                }
+                throw new Exception("Usuario no autorizado");
+            }
+            else
+            {                                                                                              
+                throw new Exception("Token vacío");
+            }
+        } 
+        catch (Exception $e) 
+        {
+            $response = new Response();
+            $payload = json_encode(array("mensaje" => "ERROR, ".$e->getMessage()));
+            $response->getBody()->write($payload);
+            return $response->withHeader('Content-Type', 'application/json');;
+        }
+    }
+    
 
     
 }

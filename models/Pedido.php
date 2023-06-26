@@ -58,7 +58,14 @@ class Pedido{
         $consulta->bindValue(':id_pedido', $id_pedido, PDO::PARAM_STR);
         $consulta->execute();
         return $consulta->fetchObject('Pedido');
-        
+    }
+    public static function obtenerPedidosSegunMesa($id_mesa)
+    {
+        $objAccesoDatos = AccesoDatos::obtenerInstancia();
+        $consulta = $objAccesoDatos->prepararConsulta("SELECT id_pedido,id_producto,id_mesa, estado,cantidadProducto,tiempoEstimado FROM pedidos WHERE id_mesa = :id_mesa");
+        $consulta->bindValue(':id_mesa', $id_mesa, PDO::PARAM_INT);
+        $consulta->execute();
+        return $consulta->fetchAll(PDO::FETCH_CLASS, 'Pedido');
     }
 
     
@@ -109,7 +116,6 @@ class Pedido{
         $tiempoEstimadoMin = Sector::CalcularTiempoDePreparacion($pedido);
 
         $fecha = new DateTime(date("d-m-Y H:i:s"));
-        var_dump($fecha);
         $pedido->tiempoEstimado = $fecha->modify('+'.$tiempoEstimadoMin.' minutes');
         $pedido->tiempoEstimado = $pedido->tiempoEstimado->format("Y-m-d H:i:s");
 

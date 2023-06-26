@@ -1,6 +1,5 @@
 <?php
 require_once './models/Encuesta.php';
-// require_once './interfaces/IApiUsable.php';
 require_once './models/Encuesta.php';
 
 class EncuestaController extends Encuesta{

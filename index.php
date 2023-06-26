@@ -20,6 +20,7 @@ require_once './controllers/EncuestaController.php';
 require_once './db/AccesoDatos.php';
 
 require_once 'middlewares/UsuariosMW.php';
+require_once 'middlewares/VerificacionesMW.php';
 
 
 $dotenv = Dotenv\Dotenv::createImmutable(__DIR__);
@@ -38,70 +39,69 @@ $app->get('/', function (Request $request, Response $response, $args) {
 });
 
 //Genera el Token
-$app->post('/empleados/login[/]', \UsuarioController::class . ':Login');
+$app->post('/empleados/login[/]', \UsuarioController::class . ':Login');//okv
 
 $app->group('/usuarios', function (RouteCollectorProxy $group) {
   //socio
-  $group->post('[/]', \UsuarioController::class . ':CargarUno');
-  $group->get('/', \UsuarioController::class . ':TraerTodos');
-  $group->delete('/', \UsuarioController::class . ':BorrarUno');
+  $group->post('[/]', \UsuarioController::class . ':CargarUno') 
+    ->add(VerificacionesMW::class. ':ValidarPostUsuario'); //ok//okv
+  $group->get('/', \UsuarioController::class . ':TraerTodos');//okv
+  $group->delete('/', \UsuarioController::class . ':BorrarUno');//okv
 })
-->add(UsuariosMW::class. ':ValidarToken')
 ->add(UsuariosMW::class. ':ValidarSocio');
 
 // peticiones
 $app->group('/productos', function (RouteCollectorProxy $group) {
   //socio
-  $group->post('[/]', \ProductoController::class . ':CargarUno');
-  $group->get('/', \ProductoController::class . ':TraerTodos');
+  $group->post('/CargarCsv', \ProductoController::class . ':CargarDesdeCsv');//ok//okv
+  $group->get('/DescargarCsv', \ProductoController::class . ':DescargarACsv');//ok//okv
+  $group->get('/', \ProductoController::class . ':TraerTodos');//ok//okv
+  $group->post('[/]', \ProductoController::class . ':CargarUno')
+  ->add(VerificacionesMW::class. ':ValidarPostProducto');//ok//okv
 })
-->add(UsuariosMW::class. ':ValidarToken')
 ->add(UsuariosMW::class. ':ValidarSocio');
-
-
 
 
 ////////////////////MESAS////////////////////////
 $app->group('/mesas', function (RouteCollectorProxy $group) {
   //mozo
-  $group->post('[/]', \MesaController::class . ':CargarUno');
-   //Subir Foto
-  $group->post('/subirfoto[/]', \MesaController::class . ':SubirFoto');
-  $group->post('/comiendo[/]', \MesaController::class . ':PasarAComiendo'); 
-  $group->post('/pagando[/]', \MesaController::class . ':PasarAPagando'); 
+  $group->post('[/]', \MesaController::class . ':CargarUno') ///ok//okv
+  ->add(UsuariosMW::class. ':ValidarMozo')
+  ->add(VerificacionesMW::class. ':ValidarPostMesa');
+  $group->post('/subirfoto[/]', \MesaController::class . ':SubirFoto')->add(UsuariosMW::class. ':ValidarMozo');//ok
+  $group->put('/comiendo', \MesaController::class . ':PasarAComiendo')->add(UsuariosMW::class. ':ValidarMozo'); //ok
+  $group->put('/pagando', \MesaController::class . ':PasarAPagando')->add(UsuariosMW::class. ':ValidarMozo');//ok
 
   //socio
-  $group->get('/', \MesaController::class . ':TraerTodos')
-  ->add(UsuariosMW::class. ':ValidarToken')
-  ->add(UsuariosMW::class. ':ValidarSocio');
-  $group->post('/cerrada[/]', \MesaController::class . ':PasarACerrada')
-  ->add(UsuariosMW::class. ':ValidarToken')
-  ->add(UsuariosMW::class. ':ValidarSocio');
-});
+  $group->get('/', \MesaController::class . ':TraerTodos')->add(UsuariosMW::class. ':ValidarSocio');//ok
+  $group->put('/cerrada[/]', \MesaController::class . ':PasarACerrada')->add(UsuariosMW::class. ':ValidarSocio');//ok
+  
+})->add(UsuariosMW::class. ':ValidarToken');
 
 ////////////////////PEDIDOS////////////////////////
 $app->group('/pedidos', function (RouteCollectorProxy $group) {
   //mozo
-  $group->post('[/]', \PedidoController::class . ':CargarUno');
-  $group->post('/paraservir[/]', \PedidoController::class . ':TraerListosParaServir'); 
+  $group->post('[/]', \PedidoController::class . ':CargarUno')//ok
+  ->add(UsuariosMW::class. ':ValidarMozo')
+  ->add(VerificacionesMW::class. ':ValidarPostPedido');
+  $group->get('/paraservir[/]', \PedidoController::class . ':TraerListosParaServir')->add(UsuariosMW::class. ':ValidarMozo');//ok
 
   //socio
-  $group->get('/', \PedidoController::class . ':TraerTodos')
-  ->add(UsuariosMW::class. ':ValidarToken')
-  ->add(UsuariosMW::class. ':ValidarSocio');
+  $group->get('/', \PedidoController::class . ':TraerTodos') ->add(UsuariosMW::class. ':ValidarSocio');//ok
 
   //cliente
-  $group->post('/pedido', \PedidoController::class . ':MostrarEstadoACliente');
+  $group->get('/pedido', \PedidoController::class . ':MostrarEstadoACliente');//ok
   //empleados
-  $group->post('/pendientes', \SectorController::class . ':VerPedidosPendientes');
-  $group->post('/enpreparacion[/]', \SectorController::class . ':PedidoEnPreparacion');
-  $group->post('/listo[/]', \SectorController::class . ':PedidoListo');
+  $group->get('/pendientes', \SectorController::class . ':VerPedidosPendientes')->add(UsuariosMW::class. ':ValidarEmpleadoDePreparacion');//ok
+  $group->put('/enpreparacion', \SectorController::class . ':PedidoEnPreparacion')->add(UsuariosMW::class. ':ValidarEmpleadoDePreparacion');//ok
+  $group->get('/enpreparacion', \SectorController::class . ':VerPedidosPreparacion')->add(UsuariosMW::class. ':ValidarEmpleadoDePreparacion');//ok
+  $group->put('/listo', \SectorController::class . ':PedidoListo')->add(UsuariosMW::class. ':ValidarEmpleadoDePreparacion');//ok
 });
 
 $app->group('/encuesta', function (RouteCollectorProxy $group) {
   //cliente
-  $group->post('[/]', \EncuestaController::class . ':CargarUno');
-});
+  $group->post('[/]', \EncuestaController::class . ':CargarUno');//ok
+}) ->add(VerificacionesMW::class. ':ValidarPostEncuesta');
 
 
 // Run app

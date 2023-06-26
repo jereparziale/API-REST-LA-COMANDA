@@ -1,32 +1,35 @@
 <?php
 require_once './models/Mesa.php';
-// require_once './interfaces/IApiUsable.php';
 require_once './models/Sector.php';
+require_once 'middlewares/UsuariosMW.php';
 
 class MesaController extends Mesa{
     public function CargarUno($request, $response, $args)
     {
         $parametros = $request->getParsedBody();
-
-        $id_mesa = $parametros['id_mesa'];
-        $id_mozo = $parametros['id_mozo'];//debe cargarse solo por usuario de mozo
+        $usuario = $request->getAttribute('usuario');
+        $usuario_mozo = $usuario->usuario; 
         $nombreCliente = $parametros['nombreCliente'];
         $cantidadComensales = $parametros['cantidadComensales'];
+        $numeroMesa = $parametros['numeroMesa'];
 
-        // Creamos el Mesa
-        $prod = new Mesa();
-        $prod->id_mesa = $id_mesa;
-        $prod->id_mozo = $id_mozo;
-        $prod->nombreCliente = $nombreCliente;
-        $prod->estado = Mesa::ESTADO_ESPERANDO;
-        $prod->cantidadComensales = $cantidadComensales;
-        $prod->importeTotal = 0;
-        $fecha = new DateTime(date("d-m-Y H:i:s"));
-        $prod->fechaApertura = $fecha->format("Y-m-d H:i:s");
-        $prod->crearMesa();
+        if(MesaController::ValidacionesMesaPost($request)){
+            // Creamos el Mesa
+            $mes = new Mesa();
+            $mes->numeroMesa = $numeroMesa;
+            $mes->usuario_mozo = $usuario_mozo;
+            $mes->nombreCliente = $nombreCliente;
+            $mes->estado = Mesa::ESTADO_ESPERANDO;
+            $mes->cantidadComensales = $cantidadComensales;
+            $mes->importeTotal = 0;
+            $fecha = new DateTime(date("d-m-Y H:i:s"));
+            $mes->fechaApertura = $fecha->format("Y-m-d H:i:s");
+            $mes->crearMesa();
 
-        $payload = json_encode(array("mensaje" => "Mesa creado con exito"));
-
+            $payload = json_encode(array("mensaje" => "Mesa creado con exito"));
+        }else{
+          $payload = json_encode(array("mensaje" => "Mesa no creada, error en los datos"));
+        }
         $response->getBody()->write($payload);
         return $response->withHeader('Content-Type', 'application/json');
     }
@@ -76,9 +79,8 @@ class MesaController extends Mesa{
 
     public function PasarAComiendo($request, $response, $args)
     {
-      $params = $request->getParsedBody();
-      $id_mesa = $params["id_mesa"];
-      $id_pedido = $params["id_pedido"];
+      $id_mesa = $request->getQueryParams()['id_mesa'];
+      $id_pedido = $request->getQueryParams()['id_pedido'];
       Mesa::CambiarEstadoAComiendo($id_mesa,$id_pedido);
       $payload = json_encode("En la mesa ".$id_mesa." están comiendo.");
       $response->getBody()->write($payload);
@@ -87,23 +89,44 @@ class MesaController extends Mesa{
     }
     public function PasarAPagando($request, $response, $args)
     {
-      $params = $request->getParsedBody();
-      $id_mesa = $params["id_mesa"];
-      Mesa::CambiarEstadoAPagando($id_mesa);
-      $payload = json_encode("En la mesa ".$id_mesa." están pagando.");
+      $id_mesa = $request->getQueryParams()['id_mesa'];
+      $mesa = Mesa::CambiarEstadoAPagando($id_mesa);
+      if($mesa !=null){
+        $payload = json_encode("En la mesa ".$mesa->id_mesa." están pagando. El importe total es: $".$mesa->importeTotal);
+      }else{
+        $payload = json_encode("No se encontro la mesa o la misma no se encuentra comiendo para cerrar la cuenta");
+      }
       $response->getBody()->write($payload);
       return $response
           ->withHeader('Content-Type', 'application/json');
     }
     public function PasarACerrada($request, $response, $args)
     {
-      $params = $request->getParsedBody();
-      $id_mesa = $params["id_mesa"];
+      $id_mesa = $request->getQueryParams()['id_mesa'];
       Mesa::CambiarEstadoACerrada($id_mesa);
       $payload = json_encode("La mesa ".$id_mesa." esta cerrada.");
       $response->getBody()->write($payload);
       return $response
           ->withHeader('Content-Type', 'application/json');
+    }
+
+    public static function ValidacionesMesaPost($request){
+      $parametros = $request->getParsedBody();
+      $nombreCliente = $parametros['nombreCliente'];
+      $cantidadComensales = $parametros['cantidadComensales'];
+      $numeroMesa = $parametros['numeroMesa'];
+      if (!is_string($nombreCliente) || empty($nombreCliente)) {
+        return false;
+      }
+
+      if (!is_numeric($cantidadComensales) || $cantidadComensales <= 0) {
+        return false;
+      }
+      if (!is_numeric($numeroMesa) || ($numeroMesa <= 0 || $numeroMesa>20)) {
+        return false;
+      }
+      return true;
+
     }
  
 }

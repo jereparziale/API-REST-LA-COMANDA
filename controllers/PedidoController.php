@@ -1,6 +1,5 @@
 <?php
 require_once './models/Pedido.php';
-// require_once './interfaces/IApiUsable.php';
 require_once './models/Sector.php';
 
 class PedidoController extends Pedido{
@@ -45,25 +44,26 @@ class PedidoController extends Pedido{
     }
     public function MostrarEstadoACliente($request, $response, $args)
     {
-        $parametros = $request->getParsedBody();
-        $pedido = $parametros['id_pedido'];
-        $pedidoSeleccionado = Pedido::obtenerPedido($pedido);
-        switch ($pedidoSeleccionado->estado)
-        {
-            case Pedido::ESTADO_ENPREPARACION:
-              if($pedidoSeleccionado->estado== Pedido::ESTADO_ENPREPARACION){
-                $tiempoEstimado=Pedido::ObtenerTiempoEsperaParaCliente($pedidoSeleccionado);
-                $payload =  json_encode(array("El pedido estara listo en: ".$tiempoEstimado." minutos"));
-                }
-                break;
-            case Pedido::ESTADO_LISTO:
-              $payload =  json_encode(array("El pedido se encuentra listo para servir"));
-                break;
-            case Pedido::ESTADO_PENDIENTE:
-              $payload =  json_encode(array("El pedido se pendiente a ser tomado por el empleado"));
-                break;
+        $id_mesa = $request->getQueryParams()['id_mesa'];
+        $payload = '';
+        $pedidosSeleccionados = Pedido::obtenerPedidosSegunMesa($id_mesa);
+        foreach($pedidosSeleccionados as $pedidoSeleccionado){
+          switch ($pedidoSeleccionado->estado)
+          {
+              case Pedido::ESTADO_ENPREPARACION:
+                if($pedidoSeleccionado->estado== Pedido::ESTADO_ENPREPARACION){
+                  $tiempoEstimado=Pedido::ObtenerTiempoEsperaParaCliente($pedidoSeleccionado);
+                  $payload .=  json_encode(array("El pedido ".$pedidoSeleccionado->id_pedido." estara listo en: ".$tiempoEstimado." minutos"));
+                  }
+                  break;
+              case Pedido::ESTADO_LISTO:
+                $payload .=  json_encode(array("El pedido ".$pedidoSeleccionado->id_pedido." se encuentra listo para servir"));
+                  break;
+              case Pedido::ESTADO_PENDIENTE:
+                $payload .=  json_encode(array("El pedido ".$pedidoSeleccionado->id_pedido." se encuentra pendiente a comenzar a preparar por el empleado"));
+                  break;
+          }
         }
-       
         $response->getBody()->write($payload);
         return $response
           ->withHeader('Content-Type', 'application/json');
