@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 20-06-2023 a las 04:46:58
+-- Tiempo de generación: 26-06-2023 a las 21:14:33
 -- Versión del servidor: 10.4.27-MariaDB
 -- Versión de PHP: 8.2.0
 
@@ -43,7 +43,9 @@ CREATE TABLE `encuestas` (
 --
 
 INSERT INTO `encuestas` (`id_encuesta`, `id_mesa`, `puntuacionmozo`, `puntuacionRestaurante`, `puntuacionMesa`, `puntuacionCocinero`, `comentario`, `fechaEncuesta`) VALUES
-(2, 10001, 10, 10, 9, 9, 'La comida estuvo excelente', '2023-06-19 19:02:38');
+(2, 10001, 10, 10, 9, 9, 'La comida estuvo excelente', '2023-06-19 19:02:38'),
+(3, 10003, 10, 10, 9, 9, 'La comida estuvo excelente', '2023-06-25 21:25:27'),
+(4, 10003, 10, 10, 9, 9, 'La comida estuvo excelente', '2023-06-25 23:22:43');
 
 -- --------------------------------------------------------
 
@@ -53,7 +55,8 @@ INSERT INTO `encuestas` (`id_encuesta`, `id_mesa`, `puntuacionmozo`, `puntuacion
 
 CREATE TABLE `mesas` (
   `id_mesa` int(5) NOT NULL,
-  `id_mozo` int(4) NOT NULL,
+  `numeroMesa` int(2) NOT NULL,
+  `usuario_mozo` varchar(30) NOT NULL,
   `nombreCliente` varchar(30) NOT NULL,
   `estado` varchar(30) NOT NULL,
   `cantidadComensales` int(2) NOT NULL,
@@ -67,8 +70,8 @@ CREATE TABLE `mesas` (
 -- Volcado de datos para la tabla `mesas`
 --
 
-INSERT INTO `mesas` (`id_mesa`, `id_mozo`, `nombreCliente`, `estado`, `cantidadComensales`, `ruta_foto`, `importeTotal`, `fechaApertura`, `fechaCierre`) VALUES
-(10001, 1000, 'maia', 'cerrada.', 8, '.\\fotos_mesas\\\\foto_mesa_10001.jpg', 3000, '2023-06-19 17:27:16', '2023-06-19 18:19:49');
+INSERT INTO `mesas` (`id_mesa`, `numeroMesa`, `usuario_mozo`, `nombreCliente`, `estado`, `cantidadComensales`, `ruta_foto`, `importeTotal`, `fechaApertura`, `fechaCierre`) VALUES
+(10004, 19, 'petu_moza', 'maia', 'con cliente esperando pedido', 3, NULL, 0, '2023-06-26 15:51:26', NULL);
 
 -- --------------------------------------------------------
 
@@ -90,7 +93,9 @@ CREATE TABLE `pedidos` (
 --
 
 INSERT INTO `pedidos` (`id_pedido`, `id_producto`, `id_mesa`, `estado`, `cantidadProducto`, `tiempoEstimado`) VALUES
-('F85FI', 1, 10001, 'entregado', 3, '2023-06-19 00:21:45');
+('F85FI', 1, 10001, 'entregado', 3, '2023-06-19 00:21:45'),
+('XBCEA', 1, 10003, 'entregado', 3, '2023-06-25 21:45:52'),
+('RX8V1', 1, 10003, 'en preparacion', 1, '2023-06-26 16:14:20');
 
 -- --------------------------------------------------------
 
@@ -111,7 +116,10 @@ CREATE TABLE `productos` (
 --
 
 INSERT INTO `productos` (`id_producto`, `nombre`, `tiempo_preparacion`, `sector_preparacion`, `precio`) VALUES
-(1, 'papas fritas', 30, 'cocina', 1000);
+(1, 'papas fritas', 30, 'cocina', 1000),
+(2, 'Cerveza Brahma', 5, 'barra_cerveza', 800),
+(3, 'Pastel De Papa', 90, 'cocina', 1000),
+(4, 'milanesa', 60, 'cocina', 1500);
 
 -- --------------------------------------------------------
 
@@ -146,8 +154,7 @@ INSERT INTO `usuarios` (`id_usuario`, `nombre`, `apellido`, `dni`, `fecha_nacimi
 (10, 'natalia', 'caballero', 42839805, '2000-12-11', 'candybar', 'pastelero', '2019-01-06', NULL, 'naty_pastelera', 42839805, 1),
 (12, 'javi', 'rondinelli', 42839805, '2000-12-11', 'cocina', 'cocinero', '2019-01-06', NULL, 'javi_cocinero', 42839805, 1),
 (26, 'petunia', 'godoy', 42839805, '2000-12-11', 'salon', 'mozo', '2019-01-06', NULL, 'petu_moza', 42839805, 1),
-(27, 'petunia', 'godoy', 42839805, '2000-12-11', 'salon', 'mozo', '2019-01-06', NULL, 'petu_moza', 42839805, 1),
-(28, 'petunia', 'godoy', 42839805, '2000-12-11', 'salon', 'mozo', '2019-01-06', NULL, 'petu_moza', 42839805, 1);
+(29, 'petunia', 'godoy', 42839805, '2000-12-11', 'salon', 'mozo', '2019-01-06', NULL, 'petu_mozaa', 42839805, 1);
 
 --
 -- Índices para tablas volcadas
@@ -185,25 +192,25 @@ ALTER TABLE `usuarios`
 -- AUTO_INCREMENT de la tabla `encuestas`
 --
 ALTER TABLE `encuestas`
-  MODIFY `id_encuesta` int(5) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id_encuesta` int(5) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT de la tabla `mesas`
 --
 ALTER TABLE `mesas`
-  MODIFY `id_mesa` int(5) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10002;
+  MODIFY `id_mesa` int(5) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10005;
 
 --
 -- AUTO_INCREMENT de la tabla `productos`
 --
 ALTER TABLE `productos`
-  MODIFY `id_producto` int(5) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id_producto` int(5) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT de la tabla `usuarios`
 --
 ALTER TABLE `usuarios`
-  MODIFY `id_usuario` int(4) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=29;
+  MODIFY `id_usuario` int(4) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=30;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

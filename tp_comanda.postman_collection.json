@@ -1,0 +1,881 @@
+{
+	"info": {
+		"_postman_id": "3e265a04-47dc-4724-a113-83d60e025431",
+		"name": "tp_comanda",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "26593927"
+	},
+	"item": [
+		{
+			"name": "Socio",
+			"item": [
+				{
+					"name": "crear usuario",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{JWT SOCIO}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "nombre",
+									"value": "petunia",
+									"type": "text"
+								},
+								{
+									"key": "apellido",
+									"value": "godoy",
+									"type": "text"
+								},
+								{
+									"key": "dni",
+									"value": "42839805",
+									"type": "text"
+								},
+								{
+									"key": "fecha_nacimiento",
+									"value": "2000/12/11",
+									"type": "text"
+								},
+								{
+									"key": "sector",
+									"value": "salon",
+									"type": "text"
+								},
+								{
+									"key": "puesto",
+									"value": "mozo",
+									"type": "text"
+								},
+								{
+									"key": "fecha_contratacion",
+									"value": "2019/01/06",
+									"type": "text"
+								},
+								{
+									"key": "usuario",
+									"value": "petu_mozaa",
+									"type": "text"
+								},
+								{
+									"key": "clave",
+									"value": "42839805",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://localhost:666/app/usuarios",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "666",
+							"path": [
+								"app",
+								"usuarios"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "listar usuarios",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{JWT SOCIO}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:666/app/usuarios/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "666",
+							"path": [
+								"app",
+								"usuarios",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Crear Producto",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{JWT SOCIO}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "nombre",
+									"value": "milanesa",
+									"type": "text"
+								},
+								{
+									"key": "tiempoPreparacion",
+									"value": "60",
+									"type": "text"
+								},
+								{
+									"key": "sectorDePreparacion",
+									"value": "cocina",
+									"type": "text"
+								},
+								{
+									"key": "precio",
+									"value": "1500",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://localhost:666/app/productos",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "666",
+							"path": [
+								"app",
+								"productos"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Listar Productos",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{JWT SOCIO}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:666/app/productos/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "666",
+							"path": [
+								"app",
+								"productos",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Cargar CSV productos",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{JWT SOCIO}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "archivo",
+									"type": "file",
+									"src": "/C:/Users/lucas/Downloads/productos.csv.csv"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://localhost:666/app/productos/CargarCsv",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "666",
+							"path": [
+								"app",
+								"productos",
+								"CargarCsv"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Descargar CSV productos",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{JWT SOCIO}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:666/app/productos/DescargarCsv",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "666",
+							"path": [
+								"app",
+								"productos",
+								"DescargarCsv"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Listar Mesas",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{JWT SOCIO}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:666/app/mesas/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "666",
+							"path": [
+								"app",
+								"mesas",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Listar Pedidos",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{JWT SOCIO}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:666/app/pedidos/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "666",
+							"path": [
+								"app",
+								"pedidos",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Cerrar Mesa",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{JWT SOCIO}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:666/app/mesas/cerrada/?id_mesa=10003",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "666",
+							"path": [
+								"app",
+								"mesas",
+								"cerrada",
+								""
+							],
+							"query": [
+								{
+									"key": "id_mesa",
+									"value": "10003"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Cliente",
+			"item": [
+				{
+					"name": "Cliente Ver Estado De Su Pedido",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:666/app/pedidos/pedido?id_mesa=10003",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "666",
+							"path": [
+								"app",
+								"pedidos",
+								"pedido"
+							],
+							"query": [
+								{
+									"key": "id_mesa",
+									"value": "10003"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Enviar Encuesta",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "id_mesa",
+									"value": "10003",
+									"type": "text"
+								},
+								{
+									"key": "puntuacionmozo",
+									"value": "10",
+									"type": "text"
+								},
+								{
+									"key": "puntuacionRestaurante",
+									"value": "10",
+									"type": "text"
+								},
+								{
+									"key": "puntuacionMesa",
+									"value": "9",
+									"type": "text"
+								},
+								{
+									"key": "puntuacionCocinero",
+									"value": "9",
+									"type": "text"
+								},
+								{
+									"key": "comentario",
+									"value": "La comida estuvo excelente",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://localhost:666/app/encuesta/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "666",
+							"path": [
+								"app",
+								"encuesta",
+								""
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Empleado",
+			"item": [
+				{
+					"name": "Listar pedidos pendientes por sector",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{JWT COCINA}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": []
+						},
+						"url": {
+							"raw": "http://localhost:666/app/pedidos/pendientes",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "666",
+							"path": [
+								"app",
+								"pedidos",
+								"pendientes"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Cambiar pedido a en preparacion",
+					"protocolProfileBehavior": {
+						"followOriginalHttpMethod": false
+					},
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{JWT COCINA}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:666/app/pedidos/enpreparacion?id_pedido=RX8V1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "666",
+							"path": [
+								"app",
+								"pedidos",
+								"enpreparacion"
+							],
+							"query": [
+								{
+									"key": "id_pedido",
+									"value": "RX8V1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Cambiar Pedido A Listo",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{JWT EMPLEADO}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": []
+						},
+						"url": {
+							"raw": "http://localhost:666/app/pedidos/listo?id_pedido=XBCEA",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "666",
+							"path": [
+								"app",
+								"pedidos",
+								"listo"
+							],
+							"query": [
+								{
+									"key": "id_pedido",
+									"value": "XBCEA"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Listar Pedidos En Preparacion",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{JWT SOCIO}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:666/app/pedidos/enpreparacion",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "666",
+							"path": [
+								"app",
+								"pedidos",
+								"enpreparacion"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Mozo",
+			"item": [
+				{
+					"name": "Crear mesas",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{JWT MOZO}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "nombreCliente",
+									"value": "maia",
+									"type": "text"
+								},
+								{
+									"key": "cantidadComensales",
+									"value": "3",
+									"type": "text"
+								},
+								{
+									"key": "numeroMesa",
+									"value": "19",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://localhost:666/app/mesas/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "666",
+							"path": [
+								"app",
+								"mesas",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Crear Pedido",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{JWT MOZO}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "id_producto",
+									"value": "1",
+									"type": "text"
+								},
+								{
+									"key": "id_mesa",
+									"value": "10003",
+									"type": "text"
+								},
+								{
+									"key": "cantidadProducto",
+									"value": "1",
+									"type": "text"
+								},
+								{
+									"key": "nota",
+									"value": "se piden 3 papas fritas",
+									"type": "text",
+									"disabled": true
+								}
+							]
+						},
+						"url": {
+							"raw": "http://localhost:666/app/pedidos/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "666",
+							"path": [
+								"app",
+								"pedidos",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Listar Pedidos Para Servir",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{JWT MOZO}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:666/app/pedidos/paraservir/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "666",
+							"path": [
+								"app",
+								"pedidos",
+								"paraservir",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Cambiar Mesa A Comiendo",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{JWT MOZO}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:666/app/mesas/comiendo?id_mesa=10003&id_pedido=XBCEA",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "666",
+							"path": [
+								"app",
+								"mesas",
+								"comiendo"
+							],
+							"query": [
+								{
+									"key": "id_mesa",
+									"value": "10003"
+								},
+								{
+									"key": "id_pedido",
+									"value": "XBCEA"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Cambiar Mesa A Pagando",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{JWT MOZO}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:666/app/mesas/pagando?id_mesa=10003",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "666",
+							"path": [
+								"app",
+								"mesas",
+								"pagando"
+							],
+							"query": [
+								{
+									"key": "id_mesa",
+									"value": "10003"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Subir Foto De Mesa",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{JWT MOZO}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "id_mesa",
+									"value": "10003",
+									"type": "text"
+								},
+								{
+									"key": "archivo",
+									"type": "file",
+									"src": "/C:/Users/lucas/Downloads/disquete.png"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://localhost:666/app/mesas/subirfoto/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "666",
+							"path": [
+								"app",
+								"mesas",
+								"subirfoto",
+								""
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Login",
+			"item": [
+				{
+					"name": "Login Devolver JWT",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "usuario",
+									"value": "maia_cocinera",
+									"type": "text"
+								},
+								{
+									"key": "clave",
+									"value": "42839805",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://localhost:666/app/empleados/login/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "666",
+							"path": [
+								"app",
+								"empleados",
+								"login",
+								""
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"variable": [
+		{
+			"key": "JWT SOCIO",
+			"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE2ODcyMjQ2OTUsImF1ZCI6ImJjMzdiNDBkODIxM2E0MDM2NzcwNjE2NTU4YThlNzJjZWMzNGEyOTUiLCJkYXRhIjp7InVzdWFyaW8iOiJqZXJlbWlhczQyODM5ODA1IiwicHVlc3RvIjoic29jaW8ifSwiYXBwIjoiQVBJX0xBQ09NQU5EQSJ9.DQs3alpV3bAygDF5au11gDKGIuKzJjgzStvoVrTInkI"
+		},
+		{
+			"key": "JWT MOZO",
+			"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE2ODc3MzI2NTIsImF1ZCI6ImJjMzdiNDBkODIxM2E0MDM2NzcwNjE2NTU4YThlNzJjZWMzNGEyOTUiLCJkYXRhIjp7InVzdWFyaW8iOiJwZXR1X21vemEiLCJwdWVzdG8iOiJtb3pvIn0sImFwcCI6IkFQSV9MQUNPTUFOREEifQ.NE1mqHx_n77dXjRXpO1RwiDmqU-N-e3_T-Koz1xYrNs"
+		},
+		{
+			"key": "JWT EMPLEADO",
+			"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE2ODc3MzI4NTcsImF1ZCI6ImJjMzdiNDBkODIxM2E0MDM2NzcwNjE2NTU4YThlNzJjZWMzNGEyOTUiLCJkYXRhIjp7InVzdWFyaW8iOiJvcmlhbmFfY2VydmVjZXJhIiwicHVlc3RvIjoiY2VydmVjZXJvIn0sImFwcCI6IkFQSV9MQUNPTUFOREEifQ.wjM6WQ6o3yllY9LoScIE8KlDbnRhEZpPUPNEAvk0PfM"
+		},
+		{
+			"key": "JWT COCINA",
+			"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE2ODc3MzQ1ODQsImF1ZCI6ImJjMzdiNDBkODIxM2E0MDM2NzcwNjE2NTU4YThlNzJjZWMzNGEyOTUiLCJkYXRhIjp7InVzdWFyaW8iOiJtYWlhX2NvY2luZXJhIiwicHVlc3RvIjoiY29jaW5lcm8ifSwiYXBwIjoiQVBJX0xBQ09NQU5EQSJ9.QaVufwQ2JUX6sJaDxKYbdMQL4ipMokSbfkw84IFrfUw"
+		}
+	]
+}
